@@ -16,3 +16,5 @@
 
 The "master" branch contains a JavaScript code in a functional style.
 The "classes" branch contains JavaScript code using OOP and classes.
+
+https://khrystynako.github.io/ToDo_App_js/
