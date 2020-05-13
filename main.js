@@ -11,8 +11,14 @@ class TodoList {
     this.render(this.todos);
   }
 
+  setListeners() {
+    this.enterTodo = document.querySelector(".new-todo");
+    this.enterTodo.addEventListener("keydown", (e) => this.addTodo(e));
+  }
+
   render(todosArr) {
     this.createTodo(todosArr);
+    this.setListeners();
   }
 
   createTodo(todosArr) {
@@ -46,6 +52,22 @@ class TodoList {
       deleteButton.className = "destroy";
       div.appendChild(deleteButton);
     });
+  }
+
+  addTodo(e) {
+    if (e.keyCode === 13) {
+      const todoListContent = this.enterTodo.value.trim();
+      if (todoListContent == null || todoListContent === "") return;
+      else {
+        this.todos.push(
+          new Todo(Date.now().toString(), todoListContent, false)
+        );
+        console.log(this.todos);
+        console.log(todoListContent);
+        this.enterTodo.value = null;
+      }
+      this.render(this.todos);
+    }
   }
 }
 
