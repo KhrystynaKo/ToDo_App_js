@@ -13,7 +13,9 @@ class TodoList {
 
   setListeners() {
     this.enterTodo = document.querySelector(".new-todo");
+    this.todoList = document.querySelector(".todo-list");
     this.enterTodo.addEventListener("keydown", (e) => this.addTodo(e));
+    this.todoList.addEventListener("click", (e) => this.deleteTodo(e));
   }
 
   render(todosArr) {
@@ -62,11 +64,27 @@ class TodoList {
         this.todos.push(
           new Todo(Date.now().toString(), todoListContent, false)
         );
-        console.log(this.todos);
-        console.log(todoListContent);
+
         this.enterTodo.value = null;
       }
       this.render(this.todos);
+    }
+  }
+
+  deleteTodo(e) {
+    if (e.target.classList.contains("destroy")) {
+      this.todos = this.todos.filter(
+        (todo) =>
+          todo.id !== e.target.parentElement.parentElement.dataset.listId
+      );
+      // const a = this.todos.splice(this.todos.indexOf(filterTodo), 1);
+      // console.log(a);
+
+      this.render(this.todos);
+
+      console.log(this.todos);
+
+      // }
     }
   }
 }
