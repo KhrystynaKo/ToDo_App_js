@@ -97,24 +97,14 @@ class TodoList {
     elem.classList.add(selectorClass);
   }
 
-  filteredTodos(e) {
+  filteredTodos(e, selectorClass, func) {
     e.preventDefault();
-    this.addClass(e.target, "selected");
-    filters.forEach((filter) => {
-      this.removeClass(filter, "selected");
-    });
-    if (e.target.classList.contains("all")) {
+
+    if (e.target.classList.contains(selectorClass)) {
       this.addClass(e.target, "selected");
+      this.todos = func;
       this.render(this.todos);
-    } else if (e.target.classList.contains("complete")) {
-      this.addClass(e.target, "selected");
-      this.todos = this.todos.filter((todo) => todo.completed === true);
-      this.render(this.todos);
-    } else if (e.target.classList.contains("active")) {
-      this.addClass(e.target, "selected");
-      this.todos = this.todos.filter((todo) => todo.completed === false);
-      this.render(this.todos);
-    } else return;
+    }
   }
 }
 
@@ -126,7 +116,21 @@ const todoList = document.querySelector(".todo-list");
 enterTodo.addEventListener("keydown", (e) => todo.addTodo(e));
 todoList.addEventListener("click", (e) => todo.deleteTodo(e));
 todoList.addEventListener("click", (e) => todo.markComplete(e));
+
 const filters = document.querySelectorAll(".filters > li > a");
 filters.forEach((filter) => {
-  filter.addEventListener("click", (e) => todo.filteredTodos(e));
+  filter.addEventListener("click", (e) => {
+    todo.removeClass(filter, "selected");
+    todo.filteredTodos(e, "all", todo.todos);
+    todo.filteredTodos(
+      e,
+      "complete",
+      todo.todos.filter((todo) => todo.completed === true)
+    );
+    todo.filteredTodos(
+      e,
+      "active",
+      todo.todos.filter((todo) => todo.completed === false)
+    );
+  });
 });
