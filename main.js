@@ -89,14 +89,29 @@ class TodoList {
     }
   }
 
+  removeClass(elem, selectorClass) {
+    elem.classList.remove(selectorClass);
+  }
+
+  addClass(elem, selectorClass) {
+    elem.classList.add(selectorClass);
+  }
+
   filteredTodos(e) {
     e.preventDefault();
+    this.addClass(e.target, "selected");
+    filters.forEach((filter) => {
+      this.removeClass(filter, "selected");
+    });
     if (e.target.classList.contains("all")) {
+      this.addClass(e.target, "selected");
       this.render(this.todos);
     } else if (e.target.classList.contains("complete")) {
+      this.addClass(e.target, "selected");
       this.todos = this.todos.filter((todo) => todo.completed === true);
       this.render(this.todos);
     } else if (e.target.classList.contains("active")) {
+      this.addClass(e.target, "selected");
       this.todos = this.todos.filter((todo) => todo.completed === false);
       this.render(this.todos);
     } else return;
