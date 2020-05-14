@@ -11,19 +11,12 @@ class TodoList {
     this.render(this.todos);
   }
 
-  setListeners() {
-    this.enterTodo = document.querySelector(".new-todo");
-    this.todoList = document.querySelector(".todo-list");
-    this.enterTodo.addEventListener("keydown", (e) => this.addTodo(e));
-    this.todoList.addEventListener("click", (e) => this.deleteTodo(e));
-  }
-
   render(todosArr) {
     this.createTodo(todosArr);
-    this.setListeners();
   }
 
   createTodo(todosArr) {
+    console.log(todosArr);
     const todoList = document.querySelector(".todo-list");
     todoList.innerHTML = "";
     todosArr.forEach((todo) => {
@@ -57,15 +50,17 @@ class TodoList {
   }
 
   addTodo(e) {
+    const enterTodo = document.querySelector(".new-todo");
+
     if (e.keyCode === 13) {
-      const todoListContent = this.enterTodo.value.trim();
+      const todoListContent = enterTodo.value.trim();
       if (todoListContent == null || todoListContent === "") return;
       else {
         this.todos.push(
           new Todo(Date.now().toString(), todoListContent, false)
         );
 
-        this.enterTodo.value = null;
+        enterTodo.value = null;
       }
       this.render(this.todos);
     }
@@ -77,16 +72,29 @@ class TodoList {
         (todo) =>
           todo.id !== e.target.parentElement.parentElement.dataset.listId
       );
-      // const a = this.todos.splice(this.todos.indexOf(filterTodo), 1);
-      // console.log(a);
 
       this.render(this.todos);
+    }
+  }
 
-      console.log(this.todos);
-
-      // }
+  markComplete(e) {
+    if (e.target.type === "checkbox") {
+      this.todos = this.todos.map((todo) => {
+        if (todo.id === e.target.parentElement.parentElement.dataset.listId) {
+          todo.completed = !todo.completed;
+        }
+        return todo;
+      });
+      this.render(this.todos);
     }
   }
 }
 
 const todo = new TodoList();
+
+const enterTodo = document.querySelector(".new-todo");
+const todoList = document.querySelector(".todo-list");
+
+enterTodo.addEventListener("keydown", (e) => todo.addTodo(e));
+todoList.addEventListener("click", (e) => todo.deleteTodo(e));
+todoList.addEventListener("click", (e) => todo.markComplete(e));
