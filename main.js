@@ -88,6 +88,19 @@ class TodoList {
       this.render(this.todos);
     }
   }
+
+  filteredTodos(e) {
+    e.preventDefault();
+    if (e.target.classList.contains("all")) {
+      this.render(this.todos);
+    } else if (e.target.classList.contains("complete")) {
+      this.todos = this.todos.filter((todo) => todo.completed === true);
+      this.render(this.todos);
+    } else if (e.target.classList.contains("active")) {
+      this.todos = this.todos.filter((todo) => todo.completed === false);
+      this.render(this.todos);
+    } else return;
+  }
 }
 
 const todo = new TodoList();
@@ -98,3 +111,7 @@ const todoList = document.querySelector(".todo-list");
 enterTodo.addEventListener("keydown", (e) => todo.addTodo(e));
 todoList.addEventListener("click", (e) => todo.deleteTodo(e));
 todoList.addEventListener("click", (e) => todo.markComplete(e));
+const filters = document.querySelectorAll(".filters > li > a");
+filters.forEach((filter) => {
+  filter.addEventListener("click", (e) => todo.filteredTodos(e));
+});
