@@ -7,7 +7,9 @@ class Todo {
 }
 class TodoList {
   constructor() {
-    this.todos = [];
+    this.todos = JSON.parse(window.localStorage.getItem("todos")) || [];
+    this.completed = [];
+    this.active = [];
     this.render(this.todos);
   }
 
@@ -59,6 +61,7 @@ class TodoList {
         this.todos.push(
           new Todo(Date.now().toString(), todoListContent, false)
         );
+        this.saveTodosInLocalStorage();
 
         enterTodo.value = null;
       }
@@ -74,6 +77,7 @@ class TodoList {
       );
 
       this.render(this.todos);
+      this.saveTodosInLocalStorage();
     }
   }
 
@@ -86,6 +90,7 @@ class TodoList {
         return todo;
       });
       this.render(this.todos);
+      this.saveTodosInLocalStorage();
     }
   }
 
@@ -97,14 +102,18 @@ class TodoList {
     elem.classList.add(selectorClass);
   }
 
-  filteredTodos(e, selectorClass, func) {
+  filteredTodos(e, name, func) {
     e.preventDefault();
 
-    if (e.target.classList.contains(selectorClass)) {
+    if (e.target.classList.contains(name)) {
       this.addClass(e.target, "selected");
-      this.todos = func;
-      this.render(this.todos);
+      this.name = func;
+      this.render(this.name);
     }
+  }
+
+  saveTodosInLocalStorage() {
+    window.localStorage.setItem("todos", JSON.stringify(this.todos));
   }
 }
 
