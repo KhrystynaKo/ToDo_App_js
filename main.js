@@ -121,6 +121,12 @@ class TodoList {
     todoCount.innerHTML = `${incompleteTodo} ${incompleteTodoCount} left`;
   }
 
+  clearCompleted() {
+    this.todos = this.todos.filter((todo) => !todo.completed);
+    this.render(this.todos);
+    this.saveTodosInLocalStorage();
+  }
+
   saveTodosInLocalStorage() {
     window.localStorage.setItem("todos", JSON.stringify(this.todos));
   }
@@ -155,3 +161,6 @@ filters.forEach((filter) => {
     );
   });
 });
+
+const clearTodo = document.querySelector(".clear-completed");
+clearTodo.addEventListener("click", () => todo.clearCompleted());
