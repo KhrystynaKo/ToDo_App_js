@@ -15,10 +15,10 @@ class TodoList {
 
   render(todosArr) {
     this.createTodo(todosArr);
+    this.countTodo();
   }
 
   createTodo(todosArr) {
-    console.log(todosArr);
     const todoList = document.querySelector(".todo-list");
     todoList.innerHTML = "";
     todosArr.forEach((todo) => {
@@ -95,6 +95,7 @@ class TodoList {
   }
 
   removeClass(elem, selectorClass) {
+    console.log(elem);
     elem.classList.remove(selectorClass);
   }
 
@@ -110,6 +111,14 @@ class TodoList {
       this.name = func;
       this.render(this.name);
     }
+  }
+
+  countTodo() {
+    const todoCount = document.querySelector(".todo-count");
+    const incompleteTodo = this.todos.filter((todo) => todo.completed === false)
+      .length;
+    const incompleteTodoCount = incompleteTodo === 1 ? "item" : "items";
+    todoCount.innerHTML = `${incompleteTodo} ${incompleteTodoCount} left`;
   }
 
   saveTodosInLocalStorage() {
@@ -129,7 +138,10 @@ todoList.addEventListener("click", (e) => todo.markComplete(e));
 const filters = document.querySelectorAll(".filters > li > a");
 filters.forEach((filter) => {
   filter.addEventListener("click", (e) => {
-    todo.removeClass(filter, "selected");
+    filters.forEach((filter) => {
+      todo.removeClass(filter, "selected");
+    });
+
     todo.filteredTodos(e, "all", todo.todos);
     todo.filteredTodos(
       e,
